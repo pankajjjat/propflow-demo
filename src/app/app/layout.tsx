@@ -28,17 +28,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dark, setDark] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('propflow-dark');
-      if (stored === 'true') {
-        document.documentElement.classList.add('dark');
-        return true;
-      }
-    }
-    return false;
-  });
+  const [dark, setDark] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+
+  // Restore dark mode from localStorage after hydration (client-only)
+  useEffect(() => {
+    const stored = localStorage.getItem('propflow-dark');
+    if (stored === 'true') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDark(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
 
   const toggleDark = () => {
     const next = !dark;
