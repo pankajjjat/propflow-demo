@@ -11,8 +11,11 @@ import {
 } from 'lucide-react';
 import { deals, documentCategories, type Deal, type Document, type Reminder } from '@/data/demo-data';
 import { AnimatedCard, StatusBadge, ProgressRing } from '@/components/ui';
+import RegistrationCountdown from '@/components/ui/CountdownBar';
+import DocumentPreview from '@/components/ui/DocumentPreview';
+import StampDutyCalculator from '@/components/ui/StampDutyCalculator';
 
-function DocCategorySection({ category, documents }: { category: string; documents: Document[] }) {
+function DocCategorySection({ category, documents, onViewDoc }: { category: string; documents: Document[]; onViewDoc?: (doc: Document) => void }) {
   const [collapsed, setCollapsed] = useState(false);
   const cat = documentCategories.find(c => c.category === category);
   const docs = documents.filter(d => d.category === category);
@@ -94,7 +97,7 @@ function DocCategorySection({ category, documents }: { category: string; documen
                   {/* Action */}
                   <div className="shrink-0">
                     {doc.status === 'complete' ? (
-                      <button className="btn-ghost text-xs">
+                      <button className="btn-ghost text-xs" onClick={() => onViewDoc?.(doc)}>
                         <Eye size={14} /> View
                       </button>
                     ) : doc.status === 'pending' || doc.status === 'missing' ? (
@@ -373,6 +376,7 @@ function RegistrationExport({ deal }: { deal: Deal }) {
 export default function DealDetailPage() {
   const params = useParams();
   const deal = deals.find(d => d.id === params.id);
+  const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
 
   if (!deal) {
     return (
@@ -427,6 +431,9 @@ export default function DealDetailPage() {
         ))}
       </div>
 
+      {/* Registration Countdown */}
+      <RegistrationCountdown targetDate={deal.registrationDate} dealName={deal.title} />
+
       {/* Main 2-column layout */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: Document Checklist */}
@@ -441,7 +448,7 @@ export default function DealDetailPage() {
               </span>
             </div>
             {documentCategories.map(cat => (
-              <DocCategorySection key={cat.category} category={cat.category} documents={deal.documents} />
+              <DocCategorySection key={cat.category} category={cat.category} documents={deal.documents} onViewDoc={setSelectedDoc} />
             ))}
           </div>
 
@@ -494,6 +501,7 @@ export default function DealDetailPage() {
         <div className="space-y-6">
           <AiAssistantPanel deal={deal} />
           <WhatsAppPreview deal={deal} />
+          <StampDutyCalculator dealValue={deal.dealValue ? parseInt(deal.dealValue.replace(/[^0-9]/g, '')) : 5000000} />
           <AnimatedCard delay={0.2}>
             <div className="card-premium p-4">
               <h2 className="font-semibold text-surface-900 text-sm mb-3">Quick Actions</h2>
@@ -515,6 +523,20 @@ export default function DealDetailPage() {
           </AnimatedCard>
         </div>
       </div>
+
+      {/* Document Preview Modal */}
+      <DocumentPreview
+        isOpen={!!selectedDoc}
+        onClose={() => setSelectedDoc(null)}
+        document={selectedDoc ? {
+          name: selectedDoc.name,
+          type: selectedDoc.name.endsWith('.pdf') ? 'PDF' : selectedDoc.name.endsWith('.jpg') || selectedDoc.name.endsWith('.png') ? 'Image' : 'Document',
+          status: selectedDoc.status === 'complete' ? 'Verified' : selectedDoc.status === 'ai-detected' ? 'AI Flagged' : selectedDoc.status,
+          uploadedBy: selectedDoc.uploadedBy || '—',
+          uploadedAt: selectedDoc.uploadedAt || '—',
+          size: '2.4 MB',
+        } : null}
+      />
     </div>
   );
 }

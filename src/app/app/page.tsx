@@ -49,7 +49,10 @@ export default function DashboardPage() {
                     <AlertTriangle size={16} className="text-rose-500" />
                     <h2 className="font-semibold text-surface-900">Urgent Attention Needed</h2>
                   </div>
-                  <span className="text-xs text-rose-500 font-medium">{urgentDeals.length} deals</span>
+                  <div className="flex items-center gap-2">
+                    <span className="badge-rose text-xs">{urgentDeals.length} deals</span>
+                    <span className="badge-blue text-[10px]">AI Priority</span>
+                  </div>
                 </div>
                 <div className="divide-y divide-surface-50">
                   {urgentDeals.map((deal) => (
