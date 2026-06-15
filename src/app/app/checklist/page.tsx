@@ -1,12 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-  CheckSquare, CheckCircle, XCircle, Clock, AlertTriangle, Sparkles,
-  User, Building2, Home, ArrowRight, Filter, Search
+  XCircle, Clock, AlertTriangle, Sparkles,
+  ArrowRight, Search
 } from 'lucide-react';
-import { deals, documentCategories } from '@/data/demo-data';
+import { deals } from '@/data/demo-data';
 import { AnimatedCard, ProgressRing, StatusBadge, PageHeader } from '@/components/ui';
 
 export default function ChecklistPage() {
@@ -79,7 +78,7 @@ export default function ChecklistPage() {
               <span className="text-xs text-amber-600 font-medium">{filteredMissing.length} items</span>
             </div>
             <div className="divide-y divide-surface-50">
-              {filteredMissing.map((item, i) => (
+              {filteredMissing.map((item) => (
                 <Link key={item.id} href={`/app/deals/${item.deal.id}`}
                   className="flex items-center gap-4 p-4 hover:bg-surface-50 transition-colors group"
                 >

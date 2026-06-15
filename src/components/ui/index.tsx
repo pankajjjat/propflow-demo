@@ -15,14 +15,23 @@ export function AnimatedCard({ children, delay = 0, className = '' }: { children
   );
 }
 
+const colorMap: Record<string, string> = {
+  emerald: 'bg-emerald-50 text-emerald-600',
+  amber: 'bg-amber-50 text-amber-600',
+  blue: 'bg-blue-50 text-blue-600',
+  rose: 'bg-rose-50 text-rose-600',
+  violet: 'bg-violet-50 text-violet-600',
+};
+
 export function StatCard({ label, value, sub, icon, trend, color = 'emerald' }: {
   label: string; value: string | number; sub?: string; icon: ReactNode; trend?: string; color?: string;
 }) {
+  const iconClasses = colorMap[color] || colorMap.emerald;
   return (
     <div className="card-premium p-5 group cursor-default">
       <div className="flex items-start justify-between mb-3">
         <span className="text-xs font-medium text-surface-400 uppercase tracking-wider">{label}</span>
-        <div className={`w-9 h-9 rounded-xl bg-${color}-50 flex items-center justify-center text-${color}-600 group-hover:scale-110 transition-transform`}>
+        <div className={`w-9 h-9 rounded-xl ${iconClasses} flex items-center justify-center group-hover:scale-110 transition-transform`}>
           {icon}
         </div>
       </div>

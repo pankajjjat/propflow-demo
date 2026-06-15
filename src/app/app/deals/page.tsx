@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Plus, Search, FolderKanban, Filter, ArrowRight } from 'lucide-react';
+import { Plus, Search, FolderKanban, ArrowRight } from 'lucide-react';
 import { deals } from '@/data/demo-data';
 import { AnimatedCard, StatusBadge, PageHeader } from '@/components/ui';
 

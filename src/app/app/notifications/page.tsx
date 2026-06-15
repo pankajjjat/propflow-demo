@@ -1,25 +1,31 @@
 'use client';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import {
   Bell, CheckCircle, Upload, MessageSquare, AlertTriangle, Sparkles,
-  FileText, Clock, CheckCheck, ChevronRight, X
+  FileText, Clock, CheckCheck, X
 } from 'lucide-react';
+import type { FC } from 'react';
 import { notifications } from '@/data/demo-data';
 import { AnimatedCard, PageHeader } from '@/components/ui';
 
-const typeIcons: Record<string, { icon: any; color: string; bg: string }> = {
-  upload: { icon: Upload, color: 'text-blue-600', bg: 'bg-blue-50' },
-  ai: { icon: Sparkles, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-  reminder: { icon: MessageSquare, color: 'text-amber-600', bg: 'bg-amber-50' },
-  alert: { icon: AlertTriangle, color: 'text-rose-500', bg: 'bg-rose-50' },
-  complete: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-  pending: { icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
-  report: { icon: FileText, color: 'text-violet-600', bg: 'bg-violet-50' },
+type IconType = FC<{ size?: number | string }>;
+
+const typeIcons: Record<string, { icon: IconType; color: string; bg: string }> = {
+  upload: { icon: Upload as IconType, color: 'text-blue-600', bg: 'bg-blue-50' },
+  ai: { icon: Sparkles as IconType, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  reminder: { icon: MessageSquare as IconType, color: 'text-amber-600', bg: 'bg-amber-50' },
+  alert: { icon: AlertTriangle as IconType, color: 'text-rose-500', bg: 'bg-rose-50' },
+  complete: { icon: CheckCircle as IconType, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  pending: { icon: Clock as IconType, color: 'text-amber-600', bg: 'bg-amber-50' },
+  report: { icon: FileText as IconType, color: 'text-violet-600', bg: 'bg-violet-50' },
 };
 
-function NotificationItem({ n }: { n: any }) {
+type NotificationItemData = {
+  id: string; title: string; message: string; time: string; read: boolean; type: string;
+};
+
+function NotificationItem({ n }: { n: NotificationItemData }) {
   const [dismissed, setDismissed] = useState(false);
   const style = typeIcons[n.type] || typeIcons.upload;
   const Icon = style.icon;

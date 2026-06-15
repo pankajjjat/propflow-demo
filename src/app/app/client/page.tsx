@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Upload, Smartphone, CheckCircle, FileText, X, Image, Shield,
-  ArrowLeft, Copy, ExternalLink, Send, ChevronDown, ChevronUp
+  Upload, Smartphone, CheckCircle, FileText,
+  ArrowLeft, Copy, ExternalLink, Send
 } from 'lucide-react';
-import { deals } from '@/data/demo-data';
+import { deals, type Deal } from '@/data/demo-data';
 import { AnimatedCard, StatusBadge, PageHeader } from '@/components/ui';
 
 function MobileUploadPreview() {
@@ -137,10 +137,23 @@ function MobileUploadPreview() {
   );
 }
 
-function PortalCard({ deal }: { deal: any }) {
+function PortalCard({ deal }: { deal: Deal }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
-    navigator.clipboard.writeText(`https://propflow.app/upload/${deal.id}`);
+    const text = `https://propflow.app/upload/${deal.id}`;
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text);
+    } else {
+      // Fallback for HTTP environments
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -174,7 +187,6 @@ function PortalCard({ deal }: { deal: any }) {
 }
 
 export default function ClientPortalPage() {
-  const [expanded, setExpanded] = useState<string | null>(null);
   const activeDeals = deals.filter(d => d.status !== 'completed');
 
   return (

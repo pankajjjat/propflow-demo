@@ -1,8 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
 import {
-  BarChart3, TrendingUp, TrendingDown, Users, FileText, CheckCircle,
-  Clock, Calendar, ArrowUp, ArrowDown, IndianRupee, Target
+  Users, CheckCircle,
+  ArrowUp, ArrowDown, IndianRupee, Target
 } from 'lucide-react';
 import { deals, stats, monthlyData } from '@/data/demo-data';
 import { AnimatedCard, StatCard, PageHeader } from '@/components/ui';
@@ -34,33 +34,7 @@ function BarChart({ data }: { data: typeof monthlyData }) {
   );
 }
 
-function CompletionDonut({ percentage, label }: { percentage: number; label: string }) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-20 h-20 mb-2">
-        <svg className="w-full h-full -rotate-90">
-          <circle cx="40" cy="40" r="34" fill="none" stroke="#e4e4e7" strokeWidth="6" />
-          <motion.circle
-            cx="40" cy="40" r="34" fill="none" stroke="#10b981"
-            strokeWidth="6" strokeLinecap="round"
-            strokeDasharray={214}
-            initial={{ strokeDashoffset: 214 }}
-            animate={{ strokeDashoffset: 214 - (percentage / 100) * 214 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-bold text-surface-900">{percentage}%</span>
-        </div>
-      </div>
-      <span className="text-xs text-surface-500">{label}</span>
-    </div>
-  );
-}
-
 export default function AnalyticsPage() {
-  const completedDeals = deals.filter(d => d.status === 'completed');
-  const activeDeals = deals.filter(d => d.status === 'active' || d.status === 'urgent');
   const totalDocs = deals.reduce((acc, d) => acc + d.documents.length, 0);
   const totalComplete = deals.reduce((acc, d) => acc + d.documents.filter(doc => doc.status === 'complete').length, 0);
   const avgCompletion = Math.round((totalComplete / totalDocs) * 100);
@@ -177,7 +151,7 @@ export default function AnalyticsPage() {
                         initial={{ width: 0 }}
                         animate={{ width: `${(item.value / totalDocs) * 100}%` }}
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className={`h-full rounded-full bg-${item.color}-500`}
+                        className={`h-full rounded-full ${item.color === 'emerald' ? 'bg-emerald-500' : 'bg-amber-500'}`}
                       />
                     </div>
                   </div>

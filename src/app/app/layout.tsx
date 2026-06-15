@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, FolderKanban, CheckSquare, Bot, MessageSquare, BarChart3, Bell,
-  ChevronLeft, Menu, Sparkles, LogOut, Settings, User, Upload, X
+  LayoutDashboard, FolderKanban, CheckSquare, MessageSquare, BarChart3, Bell,
+  ChevronLeft, Menu, Sparkles, Upload, X
 } from 'lucide-react';
 
 const navItems = [

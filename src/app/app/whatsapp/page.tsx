@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageSquare, Send, CheckCircle, Clock, AlertTriangle, Smartphone,
-  ChevronDown, ChevronUp, Plus, Search, Filter, Bell, ArrowRight,
-  User, CheckCheck, X
+  ChevronDown, ChevronUp, Plus,
+  CheckCheck
 } from 'lucide-react';
-import { deals } from '@/data/demo-data';
+import { deals, type Reminder } from '@/data/demo-data';
 import { AnimatedCard, StatusBadge, PageHeader } from '@/components/ui';
 
-function WhatsAppChatPreview({ message, name, status, time }: { message: string; name: string; status: string; time: string }) {
+function WhatsAppChatPreview({ message, time }: { message: string; time: string }) {
   return (
     <div className="flex items-start gap-2 mb-3">
       <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 mt-1">
@@ -40,7 +40,7 @@ function WhatsAppChatPreview({ message, name, status, time }: { message: string;
   );
 }
 
-function ReminderCard({ reminder, dealTitle }: { reminder: any; dealTitle: string }) {
+function ReminderCard({ reminder, dealTitle }: { reminder: Reminder; dealTitle: string }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -175,15 +175,11 @@ export default function WhatsAppPage() {
                         </div>
                       </div>
                       <WhatsAppChatPreview
-                        name="Rajesh Sharma"
                         time="9:30 AM"
-                        status="sent"
                         message="Hello Rajesh ji, these documents are still pending for your Jaipur Apartment deal: 📄 Bank Statement (6 months) 📄 Passport Photo. Please upload here at your earliest convenience."
                       />
                       <WhatsAppChatPreview
-                        name="Priya Mehta"
                         time="6:15 PM"
-                        status="sent"
                         message="Hello Priya ji, Tax Receipt & NOC from Society are still pending. Registration is in 5 days. Please upload the remaining documents."
                       />
                       {/* Outgoing typing */}

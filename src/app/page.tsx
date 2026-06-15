@@ -2,7 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, FileText, Bell, Smartphone, Zap, Shield, Users, BarChart3, MessageSquare, FolderOpen, Upload, Sparkles, IndianRupee, Play, ChevronDown, Menu, X, Landmark } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, Bell, BarChart3, MessageSquare, FolderOpen, Upload, Sparkles, Play, ChevronDown, Landmark } from 'lucide-react';
 
 function Navbar() {
   return (
@@ -499,8 +499,8 @@ function MarketSection() {
               { value: '15-25', label: 'Documents Per Deal', color: 'amber' },
               { value: '73%', label: 'Deals with Missing Docs', color: 'rose' },
             ].map((m) => (
-              <div key={m.label} className={`card-premium p-6 text-center`}>
-                <div className={`text-3xl font-bold text-${m.color}-600 mb-1`}>{m.value}</div>
+              <div key={m.label} className="card-premium p-6 text-center">
+                <div className={`text-3xl font-bold mb-1 ${m.color === 'emerald' ? 'text-emerald-600' : m.color === 'blue' ? 'text-blue-600' : m.color === 'amber' ? 'text-amber-600' : 'text-rose-600'}`}>{m.value}</div>
                 <div className="text-sm text-surface-500">{m.label}</div>
               </div>
             ))}

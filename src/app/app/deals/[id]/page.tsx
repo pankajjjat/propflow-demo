@@ -6,13 +6,13 @@ import { useParams } from 'next/navigation';
 import {
   ArrowLeft, CheckCircle, XCircle, AlertTriangle, Clock, Upload, MessageSquare,
   Download, Archive, Bot, User, Building2, Home, FileText, Eye, Sparkles,
-  Send, Calendar, IndianRupee, MapPin, ChevronRight, Paperclip, Smartphone,
-  RefreshCw, Share2, ChevronDown, ChevronUp, X, Loader2
+  Send, Calendar, MapPin, Smartphone,
+  RefreshCw, Share2, ChevronDown, ChevronUp, Loader2
 } from 'lucide-react';
-import { deals, aiInsights, documentCategories } from '@/data/demo-data';
-import { AnimatedCard, StatusBadge, ProgressRing, PageHeader } from '@/components/ui';
+import { deals, documentCategories, type Deal, type Document, type Reminder } from '@/data/demo-data';
+import { AnimatedCard, StatusBadge, ProgressRing } from '@/components/ui';
 
-function DocCategorySection({ category, documents }: { category: string; documents: any[] }) {
+function DocCategorySection({ category, documents }: { category: string; documents: Document[] }) {
   const [collapsed, setCollapsed] = useState(false);
   const cat = documentCategories.find(c => c.category === category);
   const docs = documents.filter(d => d.category === category);
@@ -113,7 +113,7 @@ function DocCategorySection({ category, documents }: { category: string; documen
   );
 }
 
-function WhatsAppPreview({ deal }: { deal: any }) {
+function WhatsAppPreview({ deal }: { deal: Deal }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="card-premium overflow-hidden">
@@ -135,7 +135,7 @@ function WhatsAppPreview({ deal }: { deal: any }) {
         {expanded && (
           <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden border-t border-surface-100">
             <div className="p-4 space-y-3">
-              {deal.reminders.map((r: any) => (
+              {deal.reminders.map((r: Reminder) => (
                 <div key={r.id} className="bg-surface-50 rounded-xl p-3">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ function WhatsAppPreview({ deal }: { deal: any }) {
   );
 }
 
-function AiAssistantPanel({ deal }: { deal: any }) {
+function AiAssistantPanel({ deal }: { deal: Deal }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -278,7 +278,7 @@ function AiAssistantPanel({ deal }: { deal: any }) {
   );
 }
 
-function RegistrationExport({ deal }: { deal: any }) {
+function RegistrationExport({ deal }: { deal: Deal }) {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
 
