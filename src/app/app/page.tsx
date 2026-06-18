@@ -1,9 +1,8 @@
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Plus, FileText, AlertTriangle, CheckCircle, Clock, Calendar, ArrowRight, Upload, MessageSquare, Download, Eye, FolderKanban } from 'lucide-react';
 import { deals, stats } from '@/data/demo-data';
-import { AnimatedCard, StatCard, QuickAction } from '@/components/ui';
+import { AnimatedCard, StatCard, QuickAction, ProgressBar } from '@/components/ui';
 
 export default function DashboardPage() {
   const urgentDeals = deals.filter(d => d.status === 'urgent');
@@ -101,14 +100,7 @@ export default function DashboardPage() {
                     <div className="text-right">
                       <div className="text-xs font-medium text-surface-700">{deal.dealValue}</div>
                       <div className="flex items-center gap-2 mt-1 justify-end">
-                        <div className="w-20 h-1.5 rounded-full bg-surface-200 overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${deal.completion}%` }}
-                            transition={{ duration: 1, delay: i * 0.1 }}
-                            className={`h-full rounded-full ${deal.completion === 100 ? 'bg-emerald-500' : deal.completion > 60 ? 'bg-emerald-500' : 'bg-amber-500'}`}
-                          />
-                        </div>
+                        <ProgressBar value={deal.completion} color={deal.completion > 60 ? 'emerald' : 'amber'} height={6} />
                         <span className="text-xs text-surface-400">{deal.completion}%</span>
                       </div>
                     </div>

@@ -1,10 +1,9 @@
 'use client';
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Plus, Search, FolderKanban, ArrowRight } from 'lucide-react';
 import { deals } from '@/data/demo-data';
-import { AnimatedCard, StatusBadge, PageHeader } from '@/components/ui';
+import { AnimatedCard, StatusBadge, PageHeader, ProgressBar } from '@/components/ui';
 
 export default function DealsPage() {
   const [search, setSearch] = useState('');
@@ -100,17 +99,7 @@ export default function DealsPage() {
                     <div>
                       <div className="text-xs text-surface-500">Completion</div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <div className="w-16 h-1.5 rounded-full bg-surface-200 overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${deal.completion}%` }}
-                            transition={{ duration: 1, delay: i * 0.05 }}
-                            className={`h-full rounded-full ${
-                              deal.completion === 100 ? 'bg-emerald-500' :
-                              deal.completion > 60 ? 'bg-emerald-500' : 'bg-amber-500'
-                            }`}
-                          />
-                        </div>
+                        <ProgressBar value={deal.completion} color={deal.completion > 60 ? 'emerald' : 'amber'} height={6} />
                         <span className="text-xs text-surface-400">{deal.completion}%</span>
                       </div>
                     </div>

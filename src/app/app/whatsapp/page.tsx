@@ -128,6 +128,35 @@ export default function WhatsAppPage() {
         </AnimatedCard>
       </div>
 
+      {/* WhatsApp Business API Callout */}
+      <AnimatedCard delay={0.2}>
+        <div className="card-premium overflow-hidden mb-6 border-amber-200/60">
+          <div className="bg-amber-50 px-5 py-3 flex items-center gap-3 border-b border-amber-200/60">
+            <AlertTriangle size={16} className="text-amber-600 shrink-0" />
+            <div>
+              <span className="font-semibold text-amber-800 text-sm">WhatsApp Business API Required for Production</span>
+              <p className="text-xs text-amber-700 mt-0.5">The demo below simulates WhatsApp messaging. To go live, complete these steps:</p>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-amber-100">
+            {[
+              { step: '1', title: 'Register WABA', desc: 'Apply for a WhatsApp Business Account via Meta Business Platform. Requires business verification (GST/PAN).' },
+              { step: '2', title: 'Configure Webhook', desc: 'Set up a webhook endpoint to receive incoming messages, delivery receipts, and status callbacks from Meta.' },
+              { step: '3', title: 'Message Templates', desc: 'Create pre-approved message templates for notifications, reminders, and OTPs. Template approval takes 24-48 hrs.' },
+              { step: '4', title: 'Go Live', desc: 'Switch from demo mode to production WABA. Configure rate limits (1K/1M messages per day based on tier).' },
+            ].map(({ step, title, desc }) => (
+              <div key={step} className="p-4">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 text-[10px] font-bold">{step}</div>
+                  <span className="text-xs font-semibold text-amber-800">{title}</span>
+                </div>
+                <p className="text-[11px] text-amber-700/80 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </AnimatedCard>
+
       {/* Tabs */}
       <div className="flex items-center gap-1.5 mb-6">
         {(['history', 'preview'] as const).map(tab => (

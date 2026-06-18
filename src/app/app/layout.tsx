@@ -5,13 +5,15 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, FolderKanban, CheckSquare, MessageSquare, BarChart3, Bell, IndianRupee,
-  ChevronLeft, Menu, Sparkles, Upload, X, Sun, Moon, Plus
+  ChevronLeft, Menu, Sparkles, Upload, X, Sun, Moon, Plus, Users, Languages
 } from 'lucide-react';
 import KeyboardShortcutsProvider from '@/components/ui/KeyboardShortcutsProvider';
 import OnboardingWizard from '@/components/ui/OnboardingWizard';
+import { ErrorBoundary } from '@/components/ui';
 
 const navItems = [
   { href: '/app', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/app/leads', icon: Users, label: 'Leads' },
   { href: '/app/deals', icon: FolderKanban, label: 'Deals' },
   { href: '/app/checklist', icon: CheckSquare, label: 'Checklist' },
   { href: '/app/client', icon: Upload, label: 'Client Portal' },
@@ -29,6 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dark, setDark] = useState(false);
+  const [locale, setLocale] = useState<'en' | 'hi'>('en');
   const [onboardingOpen, setOnboardingOpen] = useState(false);
 
   // Restore dark mode from localStorage after hydration (client-only)
@@ -39,6 +42,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       setDark(true);
       document.documentElement.classList.add('dark');
     }
+    const lang = localStorage.getItem('propflow-locale');
+    if (lang === 'hi' || lang === 'en') setLocale(lang);
   }, []);
 
   const toggleDark = () => {
@@ -46,6 +51,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     setDark(next);
     document.documentElement.classList.toggle('dark', next);
     localStorage.setItem('propflow-dark', String(next));
+  };
+
+  const toggleLang = () => {
+    const next = locale === 'en' ? 'hi' : 'en';
+    setLocale(next);
+    localStorage.setItem('propflow-locale', next);
   };
 
   // Keyboard shortcuts: close mobile sidebar on Escape
@@ -81,8 +92,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </motion.span>
             )}
           </Link>
+          {!collapsed && (
+            <button
+              onClick={toggleLang}
+              aria-label={locale === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+              className="p-1.5 rounded-lg hover:bg-surface-100 text-surface-400 hover:text-surface-600 transition-colors dark:hover:bg-surface-700/50 dark:hover:text-surface-300 mr-1"
+              title={locale === 'en' ? 'हिन्दी' : 'English'}
+            >
+              <Languages size={16} />
+            </button>
+          )}
           <button
             onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             className="ml-auto p-1.5 rounded-lg hover:bg-surface-100 text-surface-400 hover:text-surface-600 transition-colors dark:hover:bg-surface-700/50 dark:hover:text-surface-300"
           >
             <ChevronLeft size={16} className={`transition-transform ${collapsed ? 'rotate-180' : ''}`} />
@@ -156,6 +178,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {/* Dark mode toggle */}
           <button
             onClick={toggleDark}
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium
                        text-surface-500 hover:text-surface-700 hover:bg-surface-50 transition-all duration-200
                        dark:text-surface-400 dark:hover:text-surface-200 dark:hover:bg-surface-700/30"
@@ -190,14 +213,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-surface-200 h-14 flex items-center px-4 gap-3 dark:bg-surface-800 dark:border-surface-700/30">
-        <button onClick={() => setMobileOpen(true)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
+        <button onClick={() => setMobileOpen(true)} aria-label="Open navigation menu" className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
           <Menu size={20} className="text-surface-700 dark:text-surface-300" />
         </button>
         <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center">
           <span className="text-white font-bold text-xs">P</span>
         </div>
         <span className="font-bold text-surface-900 flex-1 dark:text-surface-200">PropFlow</span>
-        <button onClick={toggleDark} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
+        <button onClick={toggleLang} aria-label={locale === 'en' ? 'Switch to Hindi' : 'Switch to English'} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
+          <Languages size={18} className="text-surface-500" />
+        </button>
+        <button onClick={toggleDark} aria-label="Toggle dark mode" className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
           {dark ? <Sun size={18} className="text-surface-500" /> : <Moon size={18} className="text-surface-500" />}
         </button>
       </div>
@@ -226,7 +252,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   </div>
                   <span className="font-bold text-surface-900 dark:text-surface-200">PropFlow</span>
                 </div>
-                <button onClick={() => setMobileOpen(false)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
+                <button onClick={() => setMobileOpen(false)} aria-label="Close navigation menu" className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700/50">
                   <X size={18} className="text-surface-500" />
                 </button>
               </div>
@@ -265,7 +291,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             >
-              {children}
+              <ErrorBoundary>{children}</ErrorBoundary>
             </motion.div>
           </KeyboardShortcutsProvider>
         </div>

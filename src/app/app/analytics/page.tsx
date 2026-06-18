@@ -5,7 +5,7 @@ import {
   ArrowUp, ArrowDown, IndianRupee, Target
 } from 'lucide-react';
 import { deals, stats, monthlyData } from '@/data/demo-data';
-import { AnimatedCard, StatCard, PageHeader } from '@/components/ui';
+import { AnimatedCard, StatCard, PageHeader, ProgressBar } from '@/components/ui';
 
 function BarChart({ data }: { data: typeof monthlyData }) {
   const max = Math.max(...data.map(d => d.deals));
@@ -103,19 +103,12 @@ export default function AnalyticsPage() {
                       <div className="text-[10px] text-surface-400">{deal.dealValue}</div>
                     </div>
                     <div className="flex-1">
-                      <div className="h-2 rounded-full bg-surface-200 overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${deal.completion}%` }}
-                          transition={{ duration: 1, delay: i * 0.05 }}
-                          className={`h-full rounded-full ${
-                            deal.completion === 100 ? 'bg-emerald-500' :
-                            deal.completion > 60 ? 'bg-emerald-500' :
-                            deal.completion > 30 ? 'bg-amber-500' :
-                            'bg-rose-500'
-                          }`}
-                        />
-                      </div>
+                      <ProgressBar value={deal.completion} color={
+                        deal.completion === 100 ? 'emerald' :
+                        deal.completion > 60 ? 'emerald' :
+                        deal.completion > 30 ? 'amber' :
+                        'rose'
+                      } height={8} />
                     </div>
                     <span className="text-xs font-medium text-surface-600 w-8 text-right">{deal.completion}%</span>
                     <span className={`text-[10px] ${
@@ -146,14 +139,7 @@ export default function AnalyticsPage() {
                       <span className="text-surface-600">{item.label}</span>
                       <span className="font-medium text-surface-700">{item.value}</span>
                     </div>
-                    <div className="h-2 rounded-full bg-surface-200 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(item.value / totalDocs) * 100}%` }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className={`h-full rounded-full ${item.color === 'emerald' ? 'bg-emerald-500' : 'bg-amber-500'}`}
-                      />
-                    </div>
+                    <ProgressBar value={(item.value / totalDocs) * 100} color={item.color === 'emerald' ? 'emerald' : 'amber'} height={8} />
                   </div>
                 ))}
               </div>

@@ -130,3 +130,6 @@ export function PageHeader({ title, subtitle, action }: { title: string; subtitl
     </div>
   );
 }
+
+export { ProgressBar } from './ProgressBar';
+export { ErrorBoundary } from './ErrorBoundary';

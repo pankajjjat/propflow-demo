@@ -69,7 +69,7 @@ function MobileUploadPreview() {
               ) : !uploaded.length ? (
                 <motion.div key="upload" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <button onClick={() => setShowUpload(false)} className="text-surface-400">
+                    <button onClick={() => setShowUpload(false)} aria-label="Go back" className="text-surface-400">
                       <ArrowLeft size={14} />
                     </button>
                     <span className="text-[11px] font-medium text-surface-700">Upload Documents</span>
@@ -174,7 +174,7 @@ function PortalCard({ deal }: { deal: Deal }) {
       </div>
       <div className="flex items-center gap-2 p-3 rounded-xl bg-surface-50 border border-surface-100">
         <code className="text-xs text-surface-500 flex-1 truncate">propflow.app/upload/{deal.id}</code>
-        <button onClick={handleCopy} className="btn-ghost text-xs shrink-0">
+        <button onClick={handleCopy} aria-label="Copy upload link" className="btn-ghost text-xs shrink-0">
           {copied ? 'Copied!' : <Copy size={14} />}
         </button>
       </div>

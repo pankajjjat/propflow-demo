@@ -52,6 +52,7 @@ function NotificationItem({ n }: { n: NotificationItemData }) {
         <span className="text-[10px] text-surface-400 mt-1 block">{n.time}</span>
       </div>
       <button onClick={() => setDismissed(true)}
+        aria-label="Dismiss notification"
         className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-surface-100 text-surface-400 hover:text-surface-600 transition-all"
       >
         <X size={14} />

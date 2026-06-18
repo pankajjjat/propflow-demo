@@ -185,7 +185,11 @@ function AiAssistantPanel({ deal }: { deal: Deal }) {
             <Bot size={18} />
             <span className="font-semibold text-sm">AI Assistant</span>
           </div>
-          <button onClick={() => setIsOpen(!isOpen)} className="p-1 rounded-lg hover:bg-white/10 transition-colors">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Collapse AI Assistant panel' : 'Expand AI Assistant panel'}
+            className="p-1 rounded-lg hover:bg-white/10 transition-colors"
+          >
             {isOpen ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
           </button>
         </div>
@@ -405,8 +409,8 @@ export default function DealDetailPage() {
           <p className="text-sm text-surface-400">{deal.id} · Created {deal.createdAt}</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="btn-secondary text-xs"><Share2 size={14} /> Share</button>
-          <button className="btn-primary text-xs"><Upload size={14} /> Upload</button>
+          <button className="btn-secondary text-xs" aria-label="Share deal"><Share2 size={14} /> Share</button>
+          <button className="btn-primary text-xs" aria-label="Upload document"><Upload size={14} /> Upload</button>
         </div>
       </div>
 
